@@ -1,0 +1,10 @@
+coverage==6.4.3
+django-extensions==4.1
+dj-database-url==3.0.0
+Django==5.2.2
+flake8==7.3.0
+gunicorn==23.0.0
+psycopg2==2.9.10
+#psycopg2-binary==2.9.10
+python-dotenv==1.1.1
+whitenoise==6.9.0
