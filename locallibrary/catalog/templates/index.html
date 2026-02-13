@@ -15,6 +15,9 @@
     <li><strong>Authors:</strong> {{ num_authors }}</li>
     <li><strong>Genres:</strong>{{ num_genres }}</li>
     <li><strong>Books containing the letter 'a' in the title:</strong> {{ num_books_with_a }}</li>
-
   </ul>
+
+  <p>
+    You have visited this page {{ num_visits }} time{{ num_visits|pluralize }}.
+  </p>
 {% endblock %}
