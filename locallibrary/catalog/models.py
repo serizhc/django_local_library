@@ -5,6 +5,8 @@ from django.db import models
 from django.urls import reverse  # To generate URLS by reversing URL patterns
 from django.db.models import UniqueConstraint
 from django.db.models.functions import Lower
+from django.conf import settings
+from datetime import date
 
 class Genre(models.Model):
     """Model representing a book genre (e.g. Science Fiction, Non Fiction)."""
@@ -75,6 +77,9 @@ class Book(models.Model):
 
     class Meta:
         ordering = ['title', 'author']
+        permissions = (("can_create_book", "Can create book"),
+                       ("can_update_book", "Can update book"),
+                       ("can_delete_book", "Can delete book"))
 
     def display_genre(self):
         """Create a string for the Genre. This is required to display genre in Admin."""
@@ -134,12 +139,15 @@ class BookInstance(models.Model):
         """Returns the url to access a particular book instance."""
         return reverse('bookinstance-detail', args=[str(self.id)])
 
+    @property
+    def is_overdue(self):
+        """Determines if the book is overdue based on due date and current date."""
+        return bool(self.due_back and date.today() > self.due_back)
+
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.id} ({self.book.title})'
     
-
-
 class Author(models.Model):
     """Model representing an author."""
     first_name = models.CharField(max_length=100)

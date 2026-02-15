@@ -1,0 +1,30 @@
+.frontpage-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 12px 0 0;
+  counter-reset: fpitem;
+  display: inline-block;
+}
+
+.frontpage-list > li {
+  counter-increment: fpitem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 6px 0;
+}
+
+.frontpage-list > li::before {
+  content: counter(fpitem);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  border: 1px solid #c9c9c9;
+  background: #ffeb99;
+  color: #5499ff;
+  font-weight: 700;
+  font-size: 0.9rem;
+}

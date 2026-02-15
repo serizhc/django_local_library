@@ -27,3 +27,20 @@
     {% endfor %}
   </div>
 {% endblock %}
+
+{% block sidebar %}
+  {{ block.super }}
+
+  {% if perms.catalog.change_book or perms.catalog.delete_book %}
+  <hr>
+  <ul class="sidebar-nav">
+    {% if perms.catalog.change_book %}
+      <li><a href="{% url 'book-update' book.id %}">Edit book</a></li>
+    {% endif %}
+    {% if perms.catalog.delete_book %}
+      <li><a href="{% url 'book-delete' book.id %}">Delete book</a></li>
+    {% endif %}
+    </ul>
+  {% endif %}
+
+{% endblock %}

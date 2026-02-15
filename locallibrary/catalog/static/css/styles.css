@@ -3,3 +3,54 @@
   padding: 0;
   list-style: none;
 }
+
+#logout-form {
+  display: inline;
+}
+#logout-form button {
+  padding: 0;
+  margin: 0;
+}
+
+/* Botones del sidebar */
+.sidebar-btn {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  border: none;
+  width: auto;
+}
+
+.sidebar-btn {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.sidebar-btn-login {
+  background: #0d6efd;
+  color: white;
+}
+.sidebar-btn-login:hover { color: white; }
+
+
+.sidebar-btn-logout {
+  background: #fff;
+  color: #b42318;
+  border-color: #b42318;
+}
+.sidebar-btn-logout:hover {
+  background: #b42318;
+  color: white;
+}
+
+.app-footer{
+  margin-top: 24px;
+  padding: 12px 10px;
+  text-align: center;
+  color: #666;
+}
