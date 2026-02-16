@@ -11,7 +11,7 @@ admin.site.register(Language)
 
 class BooksInline(admin.TabularInline):  #Esto lo hemos añadido para que se vean los libros de un autor
     model = Book
-
+    extra = 0
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('last_name', 'first_name', 'date_of_birth', 'date_of_death')
 
@@ -23,6 +23,7 @@ admin.site.register(Author, AuthorAdmin)
 
 class BooksInstanceInline(admin.TabularInline):
     model = BookInstance
+    extra = 0
     
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
@@ -33,15 +34,14 @@ class BookAdmin(admin.ModelAdmin):
 # Register the Admin classes for BookInstance using the decorator
 @admin.register(BookInstance)
 class BookInstanceAdmin(admin.ModelAdmin):
-    list_display = ('book','status', 'due_back', 'id')
+    list_display = ('book', 'status', 'borrower', 'due_back', 'id')
     list_filter = ('status', 'due_back')
+
     fieldsets = (
         (None, {
             'fields': ('book', 'imprint', 'id')
         }),
         ('Availability', {
-            'fields': ('status', 'due_back')
+            'fields': ('status', 'due_back', 'borrower')
         }),
     )
-
-    
