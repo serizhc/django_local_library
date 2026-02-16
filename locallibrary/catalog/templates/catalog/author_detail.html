@@ -1,7 +1,8 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h1>{{ author }}</h1>
+  <h1>Author: {{ author }}</h1>
+
 
   {% if author.summary %}
     <p>{{ author.summary }}</p>
