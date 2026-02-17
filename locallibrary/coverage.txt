@@ -1,0 +1,27 @@
+Name                                            Stmts   Miss  Cover   Missing
+-----------------------------------------------------------------------------
+catalog/__init__.py                                 0      0   100%
+catalog/admin.py                                   24      0   100%
+catalog/apps.py                                     4      0   100%
+catalog/forms.py                                   13      0   100%
+catalog/migrations/0001_initial.py                  9      0   100%
+catalog/migrations/0002_alter_book_options.py       4      0   100%
+catalog/migrations/__init__.py                      0      0   100%
+catalog/models.py                                  74      4    95%   25, 44, 118, 140
+catalog/tests/__init__.py                           0      0   100%
+catalog/tests/test_additional.py                   84      8    90%   146-153
+catalog/tests/test_first_week.py                   69     22    68%   19-25, 37-39, 46-48, 77-79, 86-88, 95-97
+catalog/tests/test_forms.py                        27      0   100%
+catalog/tests/test_models.py                       25      0   100%
+catalog/tests/test_second_week.py                  87      7    92%   20-26
+catalog/tests/test_third_week.py                  187      7    96%   28-34
+catalog/tests/test_views.py                       217      5    98%   267-272
+catalog/urls.py                                     8      0   100%
+catalog/views.py                                  105      9    91%   156-160, 181-184
+locallibrary/__init__.py                            0      0   100%
+locallibrary/settings.py                           38      3    92%   26, 160, 174
+locallibrary/urls.py                               11      0   100%
+manage.py                                          12      2    83%   12-13
+populate_catalog.py                                87     27    69%   173-193, 198-205
+-----------------------------------------------------------------------------
+TOTAL                                            1085     94    91%
