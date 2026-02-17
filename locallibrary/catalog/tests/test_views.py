@@ -45,17 +45,17 @@ class AuthorListViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'catalog/author_list.html')
 
-    def test_pagination_is_false(self):
+    def test_pagination_is_ten(self):
         response = self.client.get(reverse('authors'))
         self.assertEqual(response.status_code, 200)
-        self.assertTrue('is_paginated' in response.context)
-        self.assertFalse(response.context['is_paginated'] == True)
+        self.assertTrue(response.context['is_paginated'])
+        self.assertEqual(len(response.context['author_list']), 10)
 
     def test_lists_all_authors(self):
         # Get second page and confirm it has (exactly) remaining 3 items
         response = self.client.get(reverse('authors')+'?page=2')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['author_list']), 13)
+        self.assertEqual(len(response.context['author_list']), 3)
 
 class LoanedBookInstancesByUserListViewTest(TestCase):
     def setUp(self):
@@ -293,6 +293,9 @@ class RenewBookInstancesViewTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertFormError(response.context['form'], 'renewal_date', 'Invalid date - renewal more than 4 weeks ahead')
 
+    def test_redirects_to_all_borrowed_book_list_on_success(self):
+        return self.test_logged_in_with_permission_borrowed_book()  
+
 class AuthorCreateViewTest(TestCase):
     """Test case for the AuthorCreate view (Challenge)."""
 
@@ -317,7 +320,7 @@ class AuthorCreateViewTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertTrue(response.url.startswith("/accounts/login/"))
 
-    def test_forbidden_if_logged_in_without_permission(self):
+    def test_forbidden_if_logged_in_but_not_correct_permission(self):
         """Logged in users without permission should get 403."""
         no_perm_user = User.objects.create_user(
             username="no_perm", password="pass12345"
@@ -326,7 +329,7 @@ class AuthorCreateViewTest(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 403)
 
-    def test_logged_in_with_permission_loads_correct_template_and_initial(self):
+    def test_logged_in_with_permission(self):
         """User with add_author permission should see the form, correct template, and initial value."""
         self.client.login(username="test_user", password="some_password")
 
@@ -339,7 +342,7 @@ class AuthorCreateViewTest(TestCase):
         self.assertContains(response, 'value="11/11/2023"')
 
     def test_post_creates_author_and_redirects_to_detail(self):
-        """Posting valid data should create Author and redirect (typically to get_absolute_url)."""
+        """Posting valid data should create Author and redirect"""
         self.client.login(username="test_user", password="some_password")
 
         post_data = {
@@ -358,3 +361,25 @@ class AuthorCreateViewTest(TestCase):
         self.assertEqual(author.last_name, "Asimov")
 
         self.assertEqual(response.url, author.get_absolute_url())
+
+    def test_uses_correct_template(self):
+        return self.test_logged_in_with_permission()
+
+    def test_form_date_of_death_initially_set_to_expected_date(self):
+        self.client.login(username='test_user', password='some_password')
+        response = self.client.get(reverse('author-create'))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['form'].initial['date_of_death'], '11/11/2023')
+
+    def test_redirects_to_detail_view_on_success(self):
+        self.client.login(username='test_user', password='some_password')
+        response = self.client.post(reverse('author-create'), {
+            'first_name': 'John',
+            'last_name': 'Smith',
+            'date_of_birth': '1970-01-01',
+            'date_of_death': '2023-11-11',
+        })
+        # debe redirigir (302) a la página de detalle del autor creado
+        self.assertEqual(response.status_code, 302)
+        # comprueba que la URL de redirección es /catalog/author/<id> o /catalog/author/<id>/
+        self.assertRegex(response.url, r"^/catalog/author/\d+/?$")
